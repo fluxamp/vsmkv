@@ -22,30 +22,21 @@ SOFTWARE.
 
  */
 
-#ifndef VSMKV_STREAM_H
-#define VSMKV_STREAM_H
+#ifndef VSMKV_FOURCC_H
+#define VSMKV_FOURCC_H
 
-#include <string>
-#include "vapoursynth/VSScript.h"
-#include "vapoursynth/VSHelper.h"
+#include <map>
 
-#include "element.h"
+#define FOURCC(a,b,c,d) (a<<24) | (b<<16) | (c<<8) | d
 
-class stream {
+class fourcc {
 public:
-    stream(const VSAPI* api, VSNodeRef *node, const int index);
+    virtual void dummy()=0;
 
-    virtual ~stream();
-
-    size_t read(char* buf, size_t size, off_t offset);
-    size_t getSize(void);
+    static const uint32_t lookup(int key, uint32_t def);
 
 private:
-    VSNodeRef* node;
-    const VSAPI* api;
-
-    node_ptr master;
+    static const std::map<int, uint32_t> cc_map;
 };
 
-
-#endif //VSMKV_STREAM_H
+#endif //VSMKV_FOURCC_H

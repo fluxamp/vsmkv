@@ -50,6 +50,7 @@ clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_clust
         frame_size += vsapi->getFrameWidth(null_frame, p) *
                       vsapi->getFrameHeight(null_frame, p);
     }
+    frame_size *= vsapi->getFrameFormat(null_frame)->bytesPerSample;
 
     vsapi->freeFrame(null_frame);
 
@@ -65,15 +66,13 @@ clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_clust
     // left-over frames at the end
     tail_cluster_size = 4 + vint(6 + block_size * remaining_blocks).getSize() + (6 + block_size * remaining_blocks);
 
-    block::setFrameSize(frame_size);
-
     total_size = cluster_size * num_clusters;
     total_size += tail_cluster_size;
 
     double fps = ((double) vi->fpsNum)/vi->fpsDen;
     int16_t frame_duration = (int16_t)(1000.0 / fps);
 
-    cached_cluster = caching_cluster_ptr(new caching_cluster(vsapi, node, frame_duration, blocks_per_cluster,
+    cached_cluster = caching_cluster_ptr(new caching_cluster(vsapi, node, frame_duration, frame_size, blocks_per_cluster,
                                                              num_clusters, remaining_blocks));
 }
 
@@ -120,9 +119,9 @@ caching_cluster::~caching_cluster() {
     }
 }
 
-caching_cluster::caching_cluster(const VSAPI* api, VSNodeRef* node, int16_t frame_dur, int blocks_per_cluster,
-                                 int num_cluster, int tail_blocks) :
-        frame_duration(frame_dur), blocks_per_cluster(blocks_per_cluster),
+caching_cluster::caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_t frame_dur, const uint64_t frame_size,
+                                 const int blocks_per_cluster, const int num_cluster, const int tail_blocks) :
+        frame_duration(frame_dur), frame_size(frame_size), blocks_per_cluster(blocks_per_cluster),
         num_clusters(num_cluster), tail_blocks(tail_blocks), node(node), vsapi(api)
 {
 }
@@ -167,7 +166,7 @@ void caching_cluster::cache_cluster(const uint64_t cluster_number) {
                         std::string(". received error message: \"") + std::string(error_message) + std::string("\".");
             }
 
-            node_ptr new_block = SimpleBlock(vsapi, node, frame, (int16_t)(i * frame_duration) /*timecode*/);
+            node_ptr new_block = SimpleBlock(vsapi, node, frame, frame_size, (int16_t)(i * frame_duration) /*timecode*/);
             cluster->addChild(new_block);
         }
 

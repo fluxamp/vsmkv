@@ -142,6 +142,7 @@ int fuse_parse_cmdline(struct fuse_args *args, struct fuse_cmdline_opts *opts) {
 }
 
 int fuse_loop_mt(struct fuse* f, int clone_fd) {
+    (void) clone_fd;
     return fuse_loop_mt(f);
 }
 #endif
@@ -185,7 +186,12 @@ int main(int argc, char **argv) {
             break;
         }
 
-        options.streams.push_back(new stream(node));
+        try {
+            options.streams.push_back(new stream(vsapi, node, index-1));
+        } catch(std::string error) {
+            std::cerr << error << std::endl;
+            return 1;
+        }
     }
 
     // mount filesystem and deal with the weird old FUSE API

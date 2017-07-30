@@ -28,11 +28,10 @@ SOFTWARE.
 #include "block.h"
 #include "utils.h"
 
-size_t block::total_size = 0;
-size_t block::frame_size = 0;
-
-block::block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const int16_t timecode) :
-        element(name, id), frame(frame), node(node), vsapi(api), head(1, timecode, 0x80)
+block::block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
+             const uint64_t frame_size, const int16_t timecode) :
+        element(name, id), frame(frame), node(node), vsapi(api), head(1, timecode, 0x80),
+        frame_size(frame_size), total_size(1 + vint(4 + frame_size).getSize() + (4 + frame_size))
 {
     vi = vsapi->getVideoInfo(node);
 
@@ -80,9 +79,9 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
     if(_size > 0) {
         // copy frame content
         for (int p = 0; p < vi->format->numPlanes && _size > 0; p++) {
-            uint64_t stride = vsapi->getStride(frame, p);
-            uint64_t rowSize = vsapi->getFrameWidth(frame, p) * vi->format->bytesPerSample;
-            uint64_t height = vsapi->getFrameHeight(frame, p);
+            uint64_t stride = (uint64_t)vsapi->getStride(frame, p);
+            uint64_t rowSize = (uint64_t)vsapi->getFrameWidth(frame, p) * vi->format->bytesPerSample;
+            uint64_t height = (uint64_t)vsapi->getFrameHeight(frame, p);
 
             if(_size > 0 && offset < rowSize * height) {
                 const uint8_t *readPtr = vsapi->getReadPtr(frame, p);
@@ -156,10 +155,4 @@ void block::report(size_t offset, uint8_t indent) const {
     }
 
     std::cout << " of block data" << std::endl;
-}
-
-void block::setFrameSize(size_t size) {
-    frame_size = size;
-    // EBML ID + Length + (BlockHeader + BlockData)
-    total_size = 1 + vint(4 + frame_size).getSize() + (4 + frame_size);
 }

@@ -28,18 +28,23 @@ SOFTWARE.
 #include "stream.h"
 #include "elements.h"
 #include "clusterlist.h"
+#include "fourcc.h"
 
-stream::stream(VSNodeRef *node) : node(node)
+stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), node(node)
 {
-    api = vsscript_getVSApi();
-    assert(api);
-
     const VSVideoInfo* vi = api->getVideoInfo(node);
 
     double _f = ((double) vi->fpsNum)/vi->fpsDen;
     float fps = (float)_f;
 
     uint64_t duration = (uint64_t)(1000000000 / _f);
+
+    const uint32_t cc_code = fourcc::lookup(vi->format->id, 0x000000);
+    if(cc_code == 0) {
+        throw std::string("unsupported color format ") + std::string(vi->format->name) +
+              std::string(" of output node ") + std::to_string(index) +
+              std::string(". choose one of the planar YUV formats from http://www.vapoursynth.com/doc/api/vapoursynth.h.html#vspresetformat");
+    }
 
     // TODO: proper logging
 //    std::cout << "double fps: " << _f << " from " << vi->fpsNum << "/" << vi->fpsDen << " resulting in " << fps << " as float." << std::endl;
@@ -78,11 +83,12 @@ stream::stream(VSNodeRef *node) : node(node)
                     ->addChild(TrackDefaultDuration(duration))
                     ->addChild(TrackVideo()
                         ->addChild(VideoFPS(fps))
-                        ->addChild(VideoPixelWidth(vi->width))
-                        ->addChild(VideoPixelHeight(vi->height))
-                        ->addChild(VideoDisplayWidth(vi->width))
-                        ->addChild(VideoDisplayHeight(vi->height))
-                        ->addChild(VideoColorSpace(0x49343230))
+                        ->addChild(VideoPixelWidth((uint64_t)vi->width))
+                        ->addChild(VideoPixelHeight((uint64_t)vi->height))
+                        ->addChild(VideoDisplayWidth((uint64_t)vi->width))
+                        ->addChild(VideoDisplayHeight((uint64_t)vi->height))
+//                        ->addChild(VideoColorSpace(0x49343230)) // I420
+                        ->addChild(VideoColorSpace(cc_code))
 //                        ->addChild(VideoColor()
 //                            ->addChild(ColorBitsPerChannel(vi->format->bitsPerSample))
 //                        )

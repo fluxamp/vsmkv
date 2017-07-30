@@ -39,7 +39,8 @@ typedef struct _header {
 class block : public element{
 public:
     ~block();
-    block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const int16_t timecode);
+    block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
+          const uint64_t frame_size, const int16_t timecode);
 
     size_t getSize() const override;
     size_t output(char *buffer, size_t _size, size_t offset) const override;
@@ -47,25 +48,23 @@ public:
     virtual node_ptr addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
-    static void setFrameSize(size_t size);
-
 private:
     const VSFrameRef* frame;
     const block_header head;
 
-    static size_t total_size;
-    static size_t frame_size;
+    const uint64_t total_size;
+    const uint64_t frame_size;
 
     const VSAPI* vsapi;
     const VSVideoInfo* vi;
     VSNodeRef* node;
 };
 
-inline node_ptr Block(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const int16_t timecode=0) {
-    return node_ptr(new block("Block", vint(0x21), api, node, frame, timecode));
+inline node_ptr Block(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const uint64_t size, const int16_t timecode=0) {
+    return node_ptr(new block("Block", vint(0x21), api, node, frame, size, timecode));
 }
-inline node_ptr SimpleBlock(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const int16_t timecode=0) {
-    return node_ptr(new block("SimpleBlock", vint(0x23), api, node, frame, timecode));
+inline node_ptr SimpleBlock(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const uint64_t size, const int16_t timecode=0) {
+    return node_ptr(new block("SimpleBlock", vint(0x23), api, node, frame, size, timecode));
 }
 
 #endif //VSMKV_BLOCK_H

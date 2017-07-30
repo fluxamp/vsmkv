@@ -30,7 +30,8 @@ SOFTWARE.
 
 class caching_cluster : public node {
 public:
-    caching_cluster(const VSAPI* api, VSNodeRef* node, int16_t frame_dur, int blocks_per_cluster, int num_cluster, int tail_blocks);
+    caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_t frame_dur, const uint64_t frame_size,
+                    const int blocks_per_cluster, const int num_cluster, const int tail_blocks);
     ~caching_cluster();
 
     void cache_cluster(const uint64_t cluster_number);
@@ -47,10 +48,11 @@ private:
     const VSAPI* vsapi;
     VSNodeRef* node;
 
-    int16_t frame_duration;
-    int blocks_per_cluster;
-    int num_clusters;
-    int tail_blocks;
+    const int16_t frame_duration;
+    const uint64_t frame_size;
+    const int blocks_per_cluster;
+    const int num_clusters;
+    const int tail_blocks;
 };
 
 // TODO: switch to shared_ptr
