@@ -36,7 +36,7 @@ mpv node_0
 
 ## Limitations
 
-- Currently, the color space is hardcoded to YUV420p, though other color spaces like RGB24 should work after changing the FourCC value in `stream.cpp`.
-- Concurrent access to the same video from multiple programs results in constant allocation and de-allocation of frames, resulting in a huge performance penalty.
+- Currently, only planar YUV color spaces are supported.
+- Concurrent access to the same video from multiple programs results in constant allocation and de-allocation of frames with a huge performance penalty.
 - The software lacks proper logging and error handling for now - errors result in uncaught exceptions.
 - Cues are not supported, yet. Skipping will require reading the whole file, i.e., will be really slow.
