@@ -75,7 +75,9 @@ size_t node::output(char *buffer, size_t _size, size_t offset) const {
 
 node_ptr node::addChild(node_ptr child) {
     children.push_back(child);
-    return node_ptr(this);
+    child->setParent(this);
+
+    return (node_ptr)(this);
 }
 
 void node::report(size_t offset, uint8_t indent) const {
@@ -102,4 +104,15 @@ void node::print_indent(uint8_t indent) const {
     for(uint8_t i=0; i < indent; i++) {
         std::cout << " ";
     }
+}
+
+size_t node::getOffset(node_ptr child) {
+    size_t ret = 0;
+    node_ptr c;
+
+    for(uint64_t i=0; i<children.size() && (c=children[i]) != child; i++) {
+        ret += c->getSize();
+    }
+
+    return ret;
 }

@@ -29,6 +29,7 @@ SOFTWARE.
 #include "elements.h"
 #include "clusterlist.h"
 #include "fourcc.h"
+#include "cues.h"
 
 stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), node(node)
 {
@@ -50,7 +51,8 @@ stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), n
 //    std::cout << "double fps: " << _f << " from " << vi->fpsNum << "/" << vi->fpsDen << " resulting in " << fps << " as float." << std::endl;
 //    std::cout << "frame format: " << vi->format->name << " with " << vi->format->bitsPerSample << " bits/sample and " << vi->format->numPlanes << " planes" << std::endl;
 
-// TODO: convert color code from vapoursynth format to FourCC
+    node_ptr cl = ClusterList(api, node);
+    node_ptr cues = Cues(static_cast<clusterlist*>(cl));
 
     master = MasterNode()
         ->addChild(EBMLHead()
@@ -95,7 +97,8 @@ stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), n
                     )
                 )
             )
-            ->addChild(ClusterList(api, node))
+            ->addChild(cues)
+            ->addChild(cl)
         )
     ;
 

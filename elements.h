@@ -92,4 +92,11 @@ inline node_ptr Cluster(void) { return node_ptr(new element("Cluster", vint(0xF4
 inline node_ptr ClusterTimecode(uint64_t tc=0, size_t size=4) { return node_ptr(new integer("ClusterTimecode", vint(0x67), tc, size)); }
 inline node_ptr BlockGroup(void) { return node_ptr(new element("BlockGroup", vint(0x20))); }
 
+inline node_ptr CuePoint(void) { return node_ptr(new element("CuePoint", vint(0x3B))); }
+inline node_ptr CueTime(uint64_t tc=0, size_t size=4) { return node_ptr(new integer("CueTime", vint(0x33), tc, size)); }
+inline node_ptr CueTrackPositions(void) { return node_ptr(new element("CuePoint", vint(0x37))); }
+inline node_ptr CueTrack(uint8_t track=1) { return node_ptr(new integer("CueTrack", vint(0x77), track, 1)); }
+inline node_ptr CueClusterPosition(uint64_t pos, size_t size=4) { return node_ptr(new integer("CueClusterPosition", vint(0x71), pos, size)); }
+inline node_ptr CueDuration(uint64_t dur, size_t size=4) { return node_ptr(new integer("CueDuration", vint(0x32), dur, size)); }
+
 #endif //VSMKV_ELEMENTS_H

@@ -3,7 +3,7 @@ project(vsmkv)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp stream.cpp stream.h vint.cpp vint.h utils.h element.cpp element.h node.cpp node.h elements.h string.cpp string.h integer.cpp integer.h clusterlist.cpp clusterlist.h block.cpp block.h floating.cpp floating.h fourcc.cpp fourcc.h)
+set(SOURCE_FILES main.cpp stream.cpp stream.h vint.cpp vint.h utils.h element.cpp element.h node.cpp node.h elements.h string.cpp string.h integer.cpp integer.h clusterlist.cpp clusterlist.h block.cpp block.h floating.cpp floating.h fourcc.cpp fourcc.h cues.cpp cues.h)
 add_executable(vsmkv ${SOURCE_FILES})
 
 target_link_libraries(vsmkv fuse)

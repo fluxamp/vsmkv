@@ -72,11 +72,15 @@ public:
     virtual node_ptr addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
+    uint64_t getClustersize() const;
+    uint64_t getClusterduration() const;
+    int getNumClusters() const;
 private:
     size_t block_size;
     size_t cluster_size;
     size_t total_size;
     size_t tail_cluster_size;
+    size_t cluster_duration;
 
     int blocks_per_cluster;
     int num_frames;

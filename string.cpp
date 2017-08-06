@@ -51,7 +51,7 @@ size_t string::output(char *buffer, size_t _size, size_t offset) const {
 
 node_ptr string::addChild(node_ptr child) {
     (void) child;
-    return node_ptr(this);
+    return (node_ptr)(this);
 }
 
 void string::report(size_t offset, uint8_t indent) const {

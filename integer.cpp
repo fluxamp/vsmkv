@@ -52,7 +52,7 @@ size_t integer::output(char *buffer, size_t _size, size_t offset) const {
 
 node_ptr integer::addChild(node_ptr child) {
     (void) child;
-    return node_ptr(this);
+    return (node_ptr)(this);
 }
 
 void integer::updateSize(void) {

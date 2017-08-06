@@ -72,6 +72,8 @@ clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_clust
     double fps = ((double) vi->fpsNum)/vi->fpsDen;
     int16_t frame_duration = (int16_t)(1000.0 / fps);
 
+    cluster_duration = (size_t)((1000.0 / fps) * blocks_per_cluster);
+
     cached_cluster = caching_cluster_ptr(new caching_cluster(vsapi, node, frame_duration, frame_size, blocks_per_cluster,
                                                              num_clusters, remaining_blocks));
 }
@@ -102,7 +104,7 @@ size_t clusterlist::output(char *buffer, size_t _size, size_t offset) const {
 
 node_ptr clusterlist::addChild(node_ptr child) {
     (void) child;
-    return node_ptr(this);
+    return (node_ptr)(this);
 }
 
 void clusterlist::report(size_t offset, uint8_t indent) const {
@@ -111,6 +113,17 @@ void clusterlist::report(size_t offset, uint8_t indent) const {
 
     cached_cluster->cache_cluster(cluster_number);
     return cached_cluster->report(offset, indent);
+}
+
+uint64_t clusterlist::getClustersize() const {
+    return cluster_size;
+}
+
+uint64_t clusterlist::getClusterduration() const {
+    return cluster_duration;
+}
+int clusterlist::getNumClusters() const {
+    return num_clusters;
 }
 
 caching_cluster::~caching_cluster() {
@@ -139,7 +152,6 @@ void caching_cluster::report(size_t offset, uint8_t indent) const {
 
 void caching_cluster::cache_cluster(const uint64_t cluster_number) {
     // implement caching of the last cluster and block(s) used
-    // TODO: make it configurable
     if(cluster_number != cached_cluster_number) {
         node_ptr cluster = Cluster()->addChild(ClusterTimecode(cluster_number * frame_duration * blocks_per_cluster));
 

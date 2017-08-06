@@ -122,7 +122,7 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
 
 node_ptr block::addChild(node_ptr child) {
     (void) child;
-    return node_ptr(this);
+    return (node_ptr)(this);
 }
 
 void block::report(size_t offset, uint8_t indent) const {

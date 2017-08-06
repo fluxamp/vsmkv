@@ -22,43 +22,26 @@ SOFTWARE.
 
  */
 
-#ifndef VSMKV_NODE_H
-#define VSMKV_NODE_H
+#ifndef VSMKV_CUES_H
+#define VSMKV_CUES_H
 
-#include <cstddef>
-#include <memory>
-#include <vector>
+#include "element.h"
+#include "clusterlist.h"
 
-class node;
-
-typedef node* node_ptr;
-
-/*
- * master class from which most others are derived from
- */
-class node {
+class cues : public element {
 public:
-    node() {};
-    virtual ~node();
-
-    virtual size_t getSize() const;
-    virtual size_t output(char* buffer, size_t _size, size_t offset) const;
+    cues(const std::string name, const vint& id, const clusterlist* list);
+    cues(const std::string name, const vint& id, const clusterlist* list, const int cue_every_nth_cluster);
 
     virtual node_ptr addChild(node_ptr child);
+    virtual void setParent(node_ptr parent);
 
-    virtual void setParent(node_ptr p) { parent = p; }
-    size_t getOffset(node_ptr child);
+private:
+    const clusterlist* list;
+    const int cue_every_nth_cluster;
 
-    /* used for debugging: prints the tree that leads to the specified offset */
-    virtual void report(size_t offset, uint8_t indent) const;
-    inline void report(size_t offset) { return report(offset, 0); }
-
-protected:
-    void print_indent(uint8_t indent) const;
-
-    std::vector<node_ptr> children;
-    node_ptr parent;
 };
 
+inline node_ptr Cues(clusterlist* cl) { return node_ptr(new cues("Cues", vint(0xC53BB6B), cl)); }
 
-#endif //VSMKV_NODE_H
+#endif //VSMKV_CUES_H
