@@ -31,7 +31,7 @@ SOFTWARE.
 #include "vapoursynth/VSScript.h"
 #include "vapoursynth/VSHelper.h"
 
-#include "stream.h"
+#include "vsmkv/stream.h"
 
 struct options {
     char* script;

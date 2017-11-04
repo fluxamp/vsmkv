@@ -23,8 +23,8 @@ SOFTWARE.
  */
 
 #include <iostream>
-#include "string.h"
-#include "utils.h"
+#include "vsmkv/string.h"
+#include "vsmkv/utils.h"
 
 size_t string::output(char *buffer, size_t _size, size_t offset) const {
     size_t written = 0;

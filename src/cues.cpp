@@ -23,8 +23,8 @@ SOFTWARE.
  */
 
 #include <assert.h>
-#include "cues.h"
-#include "elements.h"
+#include "../vsmkv/cues.h"
+#include "../vsmkv/elements.h"
 
 cues::cues(const std::string name, const vint& id, const clusterlist* list) :
     cues(name, id, list, 15) {}

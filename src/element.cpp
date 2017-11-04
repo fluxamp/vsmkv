@@ -23,8 +23,8 @@ SOFTWARE.
  */
 
 #include <iostream>
-#include "element.h"
-#include "utils.h"
+#include "../vsmkv/element.h"
+#include "../vsmkv/utils.h"
 
 size_t element::getSize() const {
     return ID.getSize() + length.getSize() + length.getValue();

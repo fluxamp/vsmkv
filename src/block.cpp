@@ -25,8 +25,8 @@ SOFTWARE.
 #include <vapoursynth/VSScript.h>
 #include <cstring>
 #include <iostream>
-#include "block.h"
-#include "utils.h"
+#include "../vsmkv/block.h"
+#include "../vsmkv/utils.h"
 
 block::block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
              const uint64_t frame_size, const int16_t timecode) :

@@ -22,7 +22,7 @@ SOFTWARE.
 
  */
 
-#include "fourcc.h"
+#include "vsmkv/fourcc.h"
 #include "vapoursynth/VapourSynth.h"
 
 std::pair<int, uint32_t> codes[] =

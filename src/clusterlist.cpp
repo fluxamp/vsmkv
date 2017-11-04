@@ -28,9 +28,9 @@ SOFTWARE.
 #include <mutex>
 #include <shared_mutex>
 
-#include "clusterlist.h"
-#include "elements.h"
-#include "block.h"
+#include "../vsmkv/clusterlist.h"
+#include "../vsmkv/elements.h"
+#include "../vsmkv/block.h"
 
 std::shared_timed_mutex cluster_lock;
 

@@ -25,11 +25,11 @@ SOFTWARE.
 #include <cstdio>
 #include <iostream>
 
-#include "stream.h"
-#include "elements.h"
-#include "clusterlist.h"
-#include "fourcc.h"
-#include "cues.h"
+#include "vsmkv/stream.h"
+#include "vsmkv/elements.h"
+#include "vsmkv/clusterlist.h"
+#include "vsmkv/fourcc.h"
+#include "vsmkv/cues.h"
 
 stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), node(node)
 {

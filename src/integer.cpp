@@ -23,7 +23,7 @@ SOFTWARE.
  */
 
 #include <iostream>
-#include "integer.h"
+#include "vsmkv/integer.h"
 
 size_t integer::output(char *buffer, size_t _size, size_t offset) const {
     size_t written = 0;

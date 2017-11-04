@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include <iostream>
 #include <cstring>
-#include "floating.h"
-#include "utils.h"
+#include "vsmkv/floating.h"
+#include "vsmkv/utils.h"
 
 size_t floating::output(char *buffer, size_t _size, size_t offset) const {
     size_t written = 0;

@@ -24,8 +24,8 @@ SOFTWARE.
 
 #include <string>
 #include <iostream>
-#include "vint.h"
-#include "utils.h"
+#include "vsmkv/vint.h"
+#include "vsmkv/utils.h"
 
 size_t vint::output(char* buffer, size_t _size, size_t offset) const
 {

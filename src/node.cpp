@@ -23,8 +23,8 @@ SOFTWARE.
  */
 
 #include <iostream>
-#include "node.h"
-#include "utils.h"
+#include "../vsmkv/node.h"
+#include "../vsmkv/utils.h"
 
 node::~node() {
     for(node_ptr child : children) {
