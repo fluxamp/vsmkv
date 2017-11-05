@@ -30,6 +30,8 @@ SOFTWARE.
 size_t vint::output(char* buffer, size_t _size, size_t offset) const
 {
     size_t ret = MIN(size, 8);
+    size_t written = 0;
+    char left_mask = (char)(0x7F >> (ret-1));
 
     if(ret == 0) {
         if(value < 0x80) {
@@ -56,24 +58,26 @@ size_t vint::output(char* buffer, size_t _size, size_t offset) const
         }
     }
 
-    if(ret > _size) {
-        throw std::string("integer value is greater than buffer size (but still within spec)");
+    if(_size == 0 || offset >= ret) {
+        return 0;
     }
 
-    buffer[0] = (char)(0x80 >> (ret-1));
-    char left_mask = (char)(0x7F >> (ret-1));
+    size_t start = MIN(ret, _size+offset);
+    uint64_t temp_value = value >> 8*(ret-start);
 
-    uint64_t temp_value = value;
-    for(size_t i=ret; i > offset + 1; i--) {
+    for(size_t i=start; i > offset + 1; i--, written++) {
         buffer[i-1] = (char)(temp_value & 0xFF);
         temp_value >>= 8;
     }
 
     if(offset <= 0) {
+        buffer[0] = (char)(0x80 >> (ret-1));
         buffer[0] |= (char) (temp_value & left_mask);
+    } else {
+        buffer[0] = (char)(temp_value & 0xFF);
     }
 
-    return ret;
+    return written+1;
 }
 
 size_t vint::getSize() const {

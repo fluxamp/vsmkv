@@ -60,7 +60,25 @@ Test(vint, output)
     memset(buffer, 0, 32);
     vint(0x1F).output((char*)buffer, 32, 0);
     vint(0x80).output((char*)buffer+1, 31, 1);
+    vint(0x81).output((char*)buffer+2, 30, 0);
 
     cr_assert(buffer[0] == 0x9F, "vint failed to output its number (expected 0x9F, received 0x%x)", (unsigned char)buffer[0]);
     cr_assert(buffer[1] == 0x80, "vint failed to output its number (expected 0x80, received 0x%x)", (unsigned char)buffer[1]);
+    cr_assert(buffer[2] == 0x40 && buffer[3] == 0x81, "vint failed to output its number (expected 0x4081, received 0x%x%x)",
+              (unsigned char)buffer[2], (unsigned char)buffer[2]);
+
+    // without offset
+    cr_assert(vint(0x0).output((char*)buffer, 32, 0) == 1, "vint.output returned wrong number of bytes written");
+    cr_assert(vint(0x80).output((char*)buffer, 32, 0) == 2, "vint.output returned wrong number of bytes written");
+    cr_assert(vint(0x4000).output((char*)buffer, 32, 0) == 3, "vint.output returned wrong number of bytes written");
+    cr_assert(vint(0x200000).output((char*)buffer, 32, 0) == 4, "vint.output returned wrong number of bytes written");
+
+    // with offset
+    cr_assert(vint(0x80).output((char*)buffer, 32, 1) == 1, "vint.output returned wrong number of bytes written");
+    cr_assert(vint(0x4000).output((char*)buffer, 32, 2) == 1, "vint.output returned wrong number of bytes written");
+    cr_assert(vint(0x200000).output((char*)buffer, 32, 2) == 2, "vint.output returned wrong number of bytes written");
+
+    // offset and limited size
+    cr_assert(vint(0x210000).output((char*)buffer, 1, 1) == 1, "vint.output returned wrong number of bytes written");
+    cr_assert(buffer[0] == 0x21, "vint failed to output its number (expected 0x21, received 0x%x)", (unsigned char)buffer[0]);
 }
