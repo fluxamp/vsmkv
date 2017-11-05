@@ -6,6 +6,8 @@ vsmkv is a FUSE-based virtual filesystem for exporting VapourSynth scripts as un
 
 FUSE, CMake and a compiler supporting the C++14 shared mutex (e.g., GCC >= 5.2) are required.
 
+Running the unit tests requires the [Criterion](https://github.com/Snaipe/Criterion) framework to be installed.
+
 ## Installation
 
 from the commandline:
