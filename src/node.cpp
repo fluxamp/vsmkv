@@ -110,9 +110,10 @@ size_t node::getOffset(node_ptr child) {
     size_t ret = 0;
     node_ptr c;
 
-    for(uint64_t i=0; i<children.size() && (c=children[i]) != child; i++) {
+    uint64_t i;
+    for(i=0; i<children.size() && (c=children[i]) != child; i++) {
         ret += c->getSize();
     }
 
-    return ret;
+    return i < children.size() ? ret : 0;
 }

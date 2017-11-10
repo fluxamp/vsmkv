@@ -31,10 +31,6 @@ node_ptr child1 = new vint(0x8F);  // size 2
 node_ptr child2 = new vint(0x04);  // size 1
 node_ptr child3 = new vint(0x15);  // size 1
 
-/************************************************************************
- * TODO: add pre- and post- routines
- */
-
 void setup(void)
 {
     parent = new node();
@@ -51,9 +47,9 @@ void finish(void)
 Test(node, getSize, .init=setup, .fini=finish)
 {
     node_ptr parent2 = new node();
-    cr_assert(parent2->getSize() == 0, "empty node has size != 0");
-    cr_assert(parent2->addChild(child1)->getSize() == 2, "node has invalid size after adding a child");
-    cr_assert(parent2->addChild(child2)->getSize() == 3, "node has invalid size after adding a child (expected 3, received %d)", child1->getSize());
+    cr_assert(parent2->getSize() == 0, "empty node has wrong size (expected 0, received %d)", parent2->getSize());
+    cr_assert(parent2->addChild(child1)->getSize() == 2, "node has invalid size after adding a child (expected 2, received %d)", parent2->getSize());
+    cr_assert(parent2->addChild(child2)->getSize() == 3, "node has invalid size after adding a child (expected 3, received %d)", parent2->getSize());
     delete parent2;
 }
 
