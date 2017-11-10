@@ -82,3 +82,11 @@ Test(vint, output)
     cr_assert(vint(0x210000).output((char*)buffer, 1, 1) == 1, "vint.output returned wrong number of bytes written");
     cr_assert(buffer[0] == 0x21, "vint failed to output its number (expected 0x21, received 0x%x)", (unsigned char)buffer[0]);
 }
+
+Test(vint, addChild)
+{
+    vint parent = vint(0x01);
+    vint child = vint(0x40e1);
+    parent.addChild(&child);
+    cr_assert(parent.getSize() == 1, "vint size changed after added child (vint should not accept any children)");
+}
