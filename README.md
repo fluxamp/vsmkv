@@ -41,4 +41,5 @@ mpv node_0
 - Currently, only planar YUV color spaces are supported.
 - Concurrent access to the same video from multiple programs results in constant allocation and de-allocation of frames with a huge performance penalty.
 - The software lacks proper logging and error handling for now - errors result in uncaught exceptions.
-- the filesystem needs to be remounted after changing the VapourSynth script file
+- The filesystem needs to be remounted after changing the VapourSynth script file
+- No Windows support (yet) due to the missing native FUSE implementation. [Crossmeta FUSE](https://github.com/crossmeta/cxfuse) may possibly work.
