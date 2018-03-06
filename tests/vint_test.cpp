@@ -85,8 +85,8 @@ Test(vint, output)
 
 Test(vint, addChild)
 {
-    vint parent = vint(0x01);
-    vint child = vint(0x40e1);
-    parent.addChild(&child);
-    cr_assert(parent.getSize() == 1, "vint size changed after added child (vint should not accept any children)");
+    auto parent = std::make_shared<vint>(0x01);
+    auto child = std::make_shared<vint>(0x40e1);
+    parent->addChild(child);
+    cr_assert(parent->getSize() == 1, "vint size changed after added child (vint should not accept any children)");
 }

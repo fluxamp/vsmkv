@@ -79,7 +79,7 @@ clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_clust
 }
 
 clusterlist::~clusterlist() {
-    delete cached_cluster;
+    // delete cached_cluster;
 }
 
 size_t clusterlist::getSize() const {
@@ -102,9 +102,9 @@ size_t clusterlist::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node_ptr clusterlist::addChild(node_ptr child) {
+node* clusterlist::addChild(node_ptr child) {
     (void) child;
-    return (node_ptr)(this);
+    return this;
 }
 
 void clusterlist::report(size_t offset, uint8_t indent) const {
@@ -128,7 +128,7 @@ int clusterlist::getNumClusters() const {
 
 caching_cluster::~caching_cluster() {
     if(cached_cluster_number >= 0) {
-        delete cached_cluster;
+        // delete cached_cluster;
     }
 }
 
@@ -139,9 +139,9 @@ caching_cluster::caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_
 {
 }
 
-node_ptr caching_cluster::addChild(node_ptr child) {
+node* caching_cluster::addChild(node_ptr child) {
     (void) child;
-    return node_ptr(this);
+    return this;
 }
 
 void caching_cluster::report(size_t offset, uint8_t indent) const {
@@ -153,7 +153,8 @@ void caching_cluster::report(size_t offset, uint8_t indent) const {
 void caching_cluster::cache_cluster(const uint64_t cluster_number) {
     // implement caching of the last cluster and block(s) used
     if(cluster_number != cached_cluster_number) {
-        node_ptr cluster = Cluster()->addChild(ClusterTimecode(cluster_number * frame_duration * blocks_per_cluster));
+        node_ptr cluster = Cluster();
+        cluster->addChild(ClusterTimecode(cluster_number * frame_duration * blocks_per_cluster));
 
         char error_message[128];
 
@@ -184,7 +185,7 @@ void caching_cluster::cache_cluster(const uint64_t cluster_number) {
 
         if(cluster_lock.try_lock_for(std::chrono::seconds(60))) {
             if (cached_cluster_number >= 0) {
-                delete cached_cluster;
+                // delete cached_cluster;
             }
 
             cached_cluster_number = (int) cluster_number;

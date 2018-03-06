@@ -50,9 +50,9 @@ size_t integer::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node_ptr integer::addChild(node_ptr child) {
+node* integer::addChild(node_ptr child) {
     (void) child;
-    return (node_ptr)(this);
+    return this;
 }
 
 void integer::updateSize(void) {

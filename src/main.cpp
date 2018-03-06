@@ -268,7 +268,7 @@ int main(int argc, char **argv) {
     fuse_opt_free_args(&f_args);
 
     // cleanup internal structures
-    for(stream* s : options.streams) {
+    for(auto& s : options.streams) {
         delete s;
     }
 

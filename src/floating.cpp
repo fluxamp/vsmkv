@@ -50,9 +50,9 @@ size_t floating::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node_ptr floating::addChild(node_ptr child) {
+node* floating::addChild(node_ptr child) {
     (void) child;
-    return (node_ptr)(this);
+    return this;
 }
 
 void floating::report(size_t offset, uint8_t indent) const {

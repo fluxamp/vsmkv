@@ -31,23 +31,25 @@ SOFTWARE.
 
 class node;
 
-typedef node* node_ptr;
+typedef std::shared_ptr<node> node_ptr;
 
 /*
  * master class from which most others are derived from
  */
 class node {
 public:
-    node() {};
-    virtual ~node();
+    node()=default;
+    virtual ~node()=default;
 
     virtual size_t getSize() const;
     virtual size_t output(char* buffer, size_t _size, size_t offset) const;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
 
-    virtual void setParent(node_ptr p) { parent = p; }
-    size_t getOffset(node_ptr child);
+    virtual void setParent(node* p) { parent = p; }
+
+    size_t getOffset(const node_ptr& child) const;
+    size_t getOffset(const node* child) const;
 
     /* used for debugging: prints the tree that leads to the specified offset */
     virtual void report(size_t offset, uint8_t indent) const;
@@ -57,7 +59,7 @@ protected:
     void print_indent(uint8_t indent) const;
 
     std::vector<node_ptr> children;
-    node_ptr parent;
+    node* parent;
 };
 
 

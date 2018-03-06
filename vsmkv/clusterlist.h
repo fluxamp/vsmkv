@@ -38,7 +38,7 @@ public:
 
     size_t output(char *buffer, size_t _size, size_t offset) const override;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
 private:
@@ -55,9 +55,7 @@ private:
     const int tail_blocks;
 };
 
-// TODO: switch to shared_ptr
-//typedef std::shared_ptr<caching_cluster> caching_cluster_ptr;
-typedef caching_cluster* caching_cluster_ptr;
+typedef std::shared_ptr<caching_cluster> caching_cluster_ptr;
 
 class clusterlist : public node {
 public:
@@ -69,7 +67,7 @@ public:
     size_t getSize() const override;
     size_t output(char *buffer, size_t _size, size_t offset) const override;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
     uint64_t getClustersize() const;
@@ -92,6 +90,8 @@ private:
     caching_cluster_ptr cached_cluster;
 };
 
-inline node_ptr ClusterList(const VSAPI* api, VSNodeRef* node) { return node_ptr(new clusterlist(api, node)); }
+typedef std::shared_ptr<clusterlist> clusterlist_ptr;
+
+inline clusterlist_ptr ClusterList(const VSAPI* api, VSNodeRef* node) { return std::make_shared<clusterlist>(api, node); }
 
 #endif //VSMKV_CLUSTERLIST_H

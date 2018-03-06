@@ -33,13 +33,14 @@ SOFTWARE.
  */
 class element : public node {
 public:
+    virtual ~element()=default;
     element(const std::string name, const vint& id) : name(name), ID(id) {}
     element(const std::string name, const vint& id, const size_t& minSize) : name(name), ID(id), length(0, minSize) {}
 
     virtual size_t getSize() const;
     virtual size_t output(char* buffer, size_t _size, size_t offset) const;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
 
 protected:
     const vint ID;

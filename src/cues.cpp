@@ -26,23 +26,23 @@ SOFTWARE.
 #include "../vsmkv/cues.h"
 #include "../vsmkv/elements.h"
 
-cues::cues(const std::string name, const vint& id, const clusterlist* list) :
+cues::cues(const std::string name, const vint& id, const clusterlist_ptr list) :
     cues(name, id, list, 15) {}
 
-cues::cues(const std::string name, const vint& id, const clusterlist* list, const int cue_every_nth_cluster) :
+cues::cues(const std::string name, const vint& id, const clusterlist_ptr list, const int cue_every_nth_cluster) :
         element(name, id), list(list), cue_every_nth_cluster(cue_every_nth_cluster) {
     assert(list != NULL);
 }
 
-node_ptr cues::addChild(node_ptr child) {
+node* cues::addChild(node_ptr child) {
     (void) child;
-    return (node_ptr)(this);
+    return this;
 }
 
 /*
  * rebuild the cue list when the parent is changed (should only happen once)
  */
-void cues::setParent(node_ptr parent) {
+void cues::setParent(node* parent) {
     node::setParent(parent);
 
     assert(children.size() == 0);   // parent should not change
@@ -54,15 +54,17 @@ void cues::setParent(node_ptr parent) {
     const int num_cues = (num_clusters - (num_clusters % cue_every_nth_cluster)) / cue_every_nth_cluster;
 
     // calculate size of cues from dummy cue
-    node_ptr dummy_cue = CuePoint()
-            ->addChild(CueTime(0, 4))
-            ->addChild(CueTrackPositions()
-                               ->addChild(CueTrack())
-                               ->addChild(CueClusterPosition(0, 8))
-            )
+    auto track_positions = CueTrackPositions();
+    track_positions->addChild(CueTrack())
+                   ->addChild(CueClusterPosition(0, 8))
+    ;
+
+    auto dummy_cue = CuePoint();
+    dummy_cue->addChild(CueTime(0, 4))
+             ->addChild(track_positions)
     ;
     const uint64_t cue_size = dummy_cue->getSize();
-    delete dummy_cue;
+    // delete dummy_cue;
 
     // get position of cues element relative to segment
     const uint64_t cue_offset = parent->getOffset(this);
@@ -72,19 +74,21 @@ void cues::setParent(node_ptr parent) {
 
     if(children.size() > 0) {
         // should never execute
-        for(node_ptr c : children) {
-            delete c;
-        }
+        // for(node_ptr c : children) {
+        //     delete c;
+        // }
         children.clear();
     }
 
     for(int i=0; i<num_cues; i++) {
-        node_ptr cue = CuePoint()
-                ->addChild(CueTime(i * cluster_duration * cue_every_nth_cluster, 4))
-                ->addChild(CueTrackPositions()
-                                   ->addChild(CueTrack())
-                                   ->addChild(CueClusterPosition(cluster_offset + i * cluster_size * cue_every_nth_cluster, 8))
-                )
+        auto track_positions = CueTrackPositions();
+        track_positions->addChild(CueTrack())
+                        ->addChild(CueClusterPosition(cluster_offset + i * cluster_size * cue_every_nth_cluster, 8))
+        ;
+
+        auto cue = CuePoint();
+        cue->addChild(CueTime(i * cluster_duration * cue_every_nth_cluster, 4))
+           ->addChild(track_positions)
         ;
         assert(cue->getSize() == cue_size); // cue and dummy cue are not in sync! (forgot to add children?)
         element::addChild(cue);

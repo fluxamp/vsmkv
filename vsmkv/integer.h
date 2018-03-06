@@ -42,7 +42,7 @@ public:
 
     virtual size_t output(char *buffer, size_t _size, size_t offset) const;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
 private:

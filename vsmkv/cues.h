@@ -30,18 +30,18 @@ SOFTWARE.
 
 class cues : public element {
 public:
-    cues(const std::string name, const vint& id, const clusterlist* list);
-    cues(const std::string name, const vint& id, const clusterlist* list, const int cue_every_nth_cluster);
+    cues(const std::string name, const vint& id, const clusterlist_ptr list);
+    cues(const std::string name, const vint& id, const clusterlist_ptr list, const int cue_every_nth_cluster);
 
-    virtual node_ptr addChild(node_ptr child);
-    virtual void setParent(node_ptr parent);
+    virtual node* addChild(node_ptr child);
+    virtual void setParent(node* parent);
 
 private:
-    const clusterlist* list;
+    const clusterlist_ptr list;
     const int cue_every_nth_cluster;
 
 };
 
-inline node_ptr Cues(clusterlist* cl) { return node_ptr(new cues("Cues", vint(0xC53BB6B), cl)); }
+inline node_ptr Cues(const clusterlist_ptr cl) { return std::make_shared<cues>("Cues", vint(0xC53BB6B), cl); }
 
 #endif //VSMKV_CUES_H

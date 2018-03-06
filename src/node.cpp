@@ -26,14 +26,6 @@ SOFTWARE.
 #include "../vsmkv/node.h"
 #include "../vsmkv/utils.h"
 
-node::~node() {
-    for(node_ptr child : children) {
-        delete child;
-    }
-
-    children.clear();
-}
-
 size_t node::getSize() const {
     size_t ret = 0;
 
@@ -73,11 +65,11 @@ size_t node::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node_ptr node::addChild(node_ptr child) {
+node* node::addChild(node_ptr child) {
     children.push_back(child);
     child->setParent(this);
 
-    return (node_ptr)(this);
+    return this;
 }
 
 void node::report(size_t offset, uint8_t indent) const {
@@ -106,12 +98,16 @@ void node::print_indent(uint8_t indent) const {
     }
 }
 
-size_t node::getOffset(node_ptr child) {
+size_t node::getOffset(const node_ptr& child) const {
+    return getOffset(child.get());
+}
+
+size_t node::getOffset(const node* child) const {
     size_t ret = 0;
-    node_ptr c;
+    node* c;
 
     uint64_t i;
-    for(i=0; i<children.size() && (c=children[i]) != child; i++) {
+    for(i=0; i<children.size() && (c=children[i].get()) != child; i++) {
         ret += c->getSize();
     }
 

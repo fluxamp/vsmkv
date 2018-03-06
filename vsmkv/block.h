@@ -38,14 +38,14 @@ typedef struct _header {
 
 class block : public element{
 public:
-    ~block();
+    virtual ~block();
     block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
           const uint64_t frame_size, const int16_t timecode);
 
     size_t getSize() const override;
     size_t output(char *buffer, size_t _size, size_t offset) const override;
 
-    virtual node_ptr addChild(node_ptr child);
+    virtual node* addChild(node_ptr child);
     virtual void report(size_t offset, uint8_t indent) const;
 
 private:

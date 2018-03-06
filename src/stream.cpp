@@ -31,9 +31,9 @@ SOFTWARE.
 #include "vsmkv/fourcc.h"
 #include "vsmkv/cues.h"
 
-stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), node(node)
+stream::stream(const VSAPI* api, VSNodeRef *_node, const int index) : api(api), node(_node)
 {
-    const VSVideoInfo* vi = api->getVideoInfo(node);
+    const VSVideoInfo* vi = api->getVideoInfo(_node);
 
     double _f = ((double) vi->fpsNum)/vi->fpsDen;
     float fps = (float)_f;
@@ -51,55 +51,66 @@ stream::stream(const VSAPI* api, VSNodeRef *node, const int index) : api(api), n
 //    std::cout << "double fps: " << _f << " from " << vi->fpsNum << "/" << vi->fpsDen << " resulting in " << fps << " as float." << std::endl;
 //    std::cout << "frame format: " << vi->format->name << " with " << vi->format->bitsPerSample << " bits/sample and " << vi->format->numPlanes << " planes" << std::endl;
 
-    node_ptr cl = ClusterList(api, node);
-    node_ptr cues = Cues(static_cast<clusterlist*>(cl));
+    auto cl = ClusterList(api, _node);
+    auto cues = Cues(cl);
 
-    master = MasterNode()
-        ->addChild(EBMLHead()
-            ->addChild(EBMLVersion())
-            ->addChild(EBMLReadVersion())
-            ->addChild(EBMLMaxIDLength())
-            ->addChild(EBMLMaxSizeLength())
-            ->addChild(DocType("matroska"))
-            ->addChild(DocTypeVersion())
-            ->addChild(DocTypeReadVersion())
-        )
-        ->addChild(Segment()
-            ->addChild(Info()
-                ->addChild(TimecodeScale())
-                ->addChild(MuxingApp())
-                ->addChild(WritingApp())
-            )
-            ->addChild(Tracks()
-                ->addChild(TrackEntry()
-                    ->addChild(TrackNumber(1))
-                    ->addChild(TrackUID(1))
-                    ->addChild(TrackType(video))
-/*                    ->addChild(TrackFlagEnabled())
-                    ->addChild(TrackFlagDefault())
-                    ->addChild(TrackFlagForced())
-                    ->addChild(TrackFlagLacing()) */
-                    ->addChild(TrackMinCache())
-/*                    ->addChild(MaxBlockAdditionID()) */
-                    ->addChild(CodecID())
-                    ->addChild(TrackDefaultDuration(duration))
-                    ->addChild(TrackVideo()
-                        ->addChild(VideoFPS(fps))
-                        ->addChild(VideoPixelWidth((uint64_t)vi->width))
-                        ->addChild(VideoPixelHeight((uint64_t)vi->height))
-                        ->addChild(VideoDisplayWidth((uint64_t)vi->width))
-                        ->addChild(VideoDisplayHeight((uint64_t)vi->height))
-//                        ->addChild(VideoColorSpace(0x49343230)) // I420
-                        ->addChild(VideoColorSpace(cc_code))
-//                        ->addChild(VideoColor()
-//                            ->addChild(ColorBitsPerChannel(vi->format->bitsPerSample))
-//                        )
-                    )
-                )
-            )
-            ->addChild(cues)
-            ->addChild(cl)
-        )
+    auto head = EBMLHead();
+    head->addChild(EBMLVersion())
+        ->addChild(EBMLReadVersion())
+        ->addChild(EBMLMaxIDLength())
+        ->addChild(EBMLMaxSizeLength())
+        ->addChild(DocType("matroska"))
+        ->addChild(DocTypeVersion())
+        ->addChild(DocTypeReadVersion())
+    ;
+
+    auto info = Info();
+    info->addChild(TimecodeScale())
+        ->addChild(MuxingApp())
+        ->addChild(WritingApp())
+    ;
+
+    auto tv = TrackVideo();
+    tv->addChild(VideoFPS(fps))
+      ->addChild(VideoPixelWidth((uint64_t)vi->width))
+      ->addChild(VideoPixelHeight((uint64_t)vi->height))
+      ->addChild(VideoDisplayWidth((uint64_t)vi->width))
+      ->addChild(VideoDisplayHeight((uint64_t)vi->height))
+//      ->addChild(VideoColorSpace(0x49343230)) // I420
+      ->addChild(VideoColorSpace(cc_code))
+//      ->addChild(VideoColor()
+//        ->addChild(ColorBitsPerChannel(vi->format->bitsPerSample))
+//      )
+    ;
+
+    auto track_entry = TrackEntry();
+    track_entry->addChild(TrackNumber(1))
+               ->addChild(TrackUID(1))
+               ->addChild(TrackType(video))
+/*               ->addChild(TrackFlagEnabled())
+                 ->addChild(TrackFlagDefault())
+                 ->addChild(TrackFlagForced())
+                 ->addChild(TrackFlagLacing()) */
+               ->addChild(TrackMinCache())
+/*               ->addChild(MaxBlockAdditionID()) */
+               ->addChild(CodecID())
+               ->addChild(TrackDefaultDuration(duration))
+               ->addChild(tv)
+    ;
+    
+    auto tracks = Tracks();
+    tracks->addChild(track_entry);
+
+    auto segment = Segment();
+    segment->addChild(info)
+           ->addChild(tracks)
+           ->addChild(cues)
+           ->addChild(cl)
+    ;
+
+    master = MasterNode();
+    master->addChild(head)
+          ->addChild(segment)
     ;
 
     // TODO: debug
