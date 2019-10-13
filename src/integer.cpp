@@ -82,7 +82,7 @@ void integer::report(size_t offset, uint8_t indent) const {
         return;
     }
 
-    print_indent(indent);
+    printIndent(indent);
     std::cout << name << std::endl;
 
     if(offset < ID.getSize()) {
@@ -98,6 +98,6 @@ void integer::report(size_t offset, uint8_t indent) const {
         return;
     }
 
-    print_indent(indent + 1);
+    printIndent(indent + 1);
     std::cout << "value " << value << std::endl;
 }

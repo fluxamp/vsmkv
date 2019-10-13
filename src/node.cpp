@@ -91,7 +91,7 @@ void node::report(size_t offset, uint8_t indent) const {
     }
 }
 
-void node::print_indent(uint8_t indent) const {
+void node::printIndent(uint8_t indent) const {
     std::cout << "+";
     for(uint8_t i=0; i < indent; i++) {
         std::cout << " ";

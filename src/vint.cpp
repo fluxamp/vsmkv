@@ -120,7 +120,7 @@ node* vint::addChild(const node_ptr& child) {
 
 void vint::report(size_t offset, uint8_t indent) const {
     if(offset < size) {
-        print_indent(indent);
+        printIndent(indent);
         std::cout << "vint " << value;
     }
 }

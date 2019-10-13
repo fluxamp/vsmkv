@@ -56,7 +56,7 @@ public:
     inline void report(size_t offset) { return report(offset, 0); }
 
 protected:
-    void print_indent(uint8_t indent) const;
+    void printIndent(uint8_t indent) const;
 
     std::vector<node_ptr> children;
     node* parent;
