@@ -64,7 +64,6 @@ void cues::setParent(const node* parent) {
              ->addChild(track_positions)
     ;
     const uint64_t cue_size = dummy_cue->getSize();
-    // delete dummy_cue;
 
     // get position of cues element relative to segment
     const uint64_t cue_offset = parent->getOffset(this);
@@ -74,9 +73,6 @@ void cues::setParent(const node* parent) {
 
     if(children.size() > 0) {
         // should never execute
-        // for(node_ptr c : children) {
-        //     delete c;
-        // }
         children.clear();
     }
 

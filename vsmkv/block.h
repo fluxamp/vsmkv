@@ -61,10 +61,10 @@ private:
 };
 
 inline node_ptr Block(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const uint64_t size, const int16_t timecode=0) {
-    return node_ptr(new block("Block", vint(0x21), api, node, frame, size, timecode));
+    return std::make_shared<block>("Block", vint(0x21), api, node, frame, size, timecode);
 }
 inline node_ptr SimpleBlock(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const uint64_t size, const int16_t timecode=0) {
-    return node_ptr(new block("SimpleBlock", vint(0x23), api, node, frame, size, timecode));
+    return std::make_shared<block>("SimpleBlock", vint(0x23), api, node, frame, size, timecode);
 }
 
 #endif //VSMKV_BLOCK_H

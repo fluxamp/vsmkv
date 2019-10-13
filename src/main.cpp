@@ -35,7 +35,7 @@ SOFTWARE.
 
 struct options {
     char* script;
-    std::vector<stream*> streams;
+    std::vector<std::unique_ptr<stream>> streams;
 };
 
 static struct options options;
@@ -187,7 +187,7 @@ int main(int argc, char **argv) {
         }
 
         try {
-            options.streams.push_back(new stream(vsapi, node, index-1));
+            options.streams.push_back(std::make_unique<stream>(vsapi, node, index-1));
         } catch(std::string error) {
             std::cerr << error << std::endl;
             return 1;
@@ -266,11 +266,6 @@ int main(int argc, char **argv) {
 
     free(f_opts.mountpoint);
     fuse_opt_free_args(&f_args);
-
-    // cleanup internal structures
-    for(auto& s : options.streams) {
-        delete s;
-    }
 
     // cleanup vapoursynth
     vsscript_freeScript(se);

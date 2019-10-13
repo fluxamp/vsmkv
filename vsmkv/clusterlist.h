@@ -32,7 +32,7 @@ class caching_cluster : public node {
 public:
     caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_t frame_dur, const uint64_t frame_size,
                     const int blocks_per_cluster, const int num_cluster, const int tail_blocks);
-    ~caching_cluster();
+    ~caching_cluster() = default;
 
     void cache_cluster(const uint64_t cluster_number);
 
@@ -62,7 +62,7 @@ public:
     clusterlist(const VSAPI* api, VSNodeRef* node);
     clusterlist(const VSAPI* api, VSNodeRef* node, int blocks_per_cluster);
 
-    virtual ~clusterlist();
+    virtual ~clusterlist() = default;
 
     size_t getSize() const override;
     size_t output(char *buffer, size_t _size, size_t offset) const override;

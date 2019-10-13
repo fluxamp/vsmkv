@@ -74,12 +74,8 @@ clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_clust
 
     cluster_duration = (size_t)((1000.0 / fps) * blocks_per_cluster);
 
-    cached_cluster = caching_cluster_ptr(new caching_cluster(vsapi, node, frame_duration, frame_size, blocks_per_cluster,
-                                                             num_clusters, remaining_blocks));
-}
-
-clusterlist::~clusterlist() {
-    // delete cached_cluster;
+    cached_cluster = std::make_shared<caching_cluster>(vsapi, node, frame_duration, frame_size, blocks_per_cluster,
+                                                       num_clusters, remaining_blocks);
 }
 
 size_t clusterlist::getSize() const {
@@ -124,12 +120,6 @@ uint64_t clusterlist::getClusterduration() const {
 }
 int clusterlist::getNumClusters() const {
     return num_clusters;
-}
-
-caching_cluster::~caching_cluster() {
-    if(cached_cluster_number >= 0) {
-        // delete cached_cluster;
-    }
 }
 
 caching_cluster::caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_t frame_dur, const uint64_t frame_size,
@@ -179,15 +169,11 @@ void caching_cluster::cache_cluster(const uint64_t cluster_number) {
                         std::string(". received error message: \"") + std::string(error_message) + std::string("\".");
             }
 
-            node_ptr new_block = SimpleBlock(vsapi, node, frame, frame_size, (int16_t)(i * frame_duration) /*timecode*/);
-            cluster->addChild(new_block);
+            auto block = SimpleBlock(vsapi, node, frame, frame_size, (int16_t)(i * frame_duration) /*timecode*/);
+            cluster->addChild(block);
         }
 
         if(cluster_lock.try_lock_for(std::chrono::seconds(60))) {
-            if (cached_cluster_number >= 0) {
-                // delete cached_cluster;
-            }
-
             cached_cluster_number = (int) cluster_number;
             cached_cluster = cluster;
 
