@@ -59,7 +59,7 @@ protected:
     void printIndent(uint8_t indent) const;
 
     std::vector<node_ptr> children;
-    node* parent;
+    const node* parent;
 };
 
 
