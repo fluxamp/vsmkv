@@ -42,7 +42,7 @@ node* cues::addChild(const node_ptr& child) {
 /*
  * rebuild the cue list when the parent is changed (should only happen once)
  */
-void cues::setParent(node* parent) {
+void cues::setParent(const node* parent) {
     node::setParent(parent);
 
     assert(children.size() == 0);   // parent should not change

@@ -34,7 +34,7 @@ public:
     cues(const std::string name, const vint& id, const clusterlist_ptr list, const int cue_every_nth_cluster);
 
     virtual node* addChild(const node_ptr& child) override;
-    virtual void setParent(node* parent);
+    virtual void setParent(const node* parent) override;
 
 private:
     const clusterlist_ptr list;

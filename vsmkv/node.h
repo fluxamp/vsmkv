@@ -46,7 +46,7 @@ public:
 
     virtual node* addChild(const node_ptr& child);
 
-    virtual void setParent(node* p) { parent = p; }
+    virtual void setParent(const node* p) { parent = p; }
 
     size_t getOffset(const node_ptr& child) const;
     size_t getOffset(const node* child) const;
