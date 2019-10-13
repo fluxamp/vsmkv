@@ -50,7 +50,7 @@ size_t floating::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node* floating::addChild(node_ptr child) {
+node* floating::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

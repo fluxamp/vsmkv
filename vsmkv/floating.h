@@ -39,10 +39,10 @@ public:
     floating(const std::string name, const vint &id, const float v, const size_t s) :
             element(name, id), value(v) { updateLength(4); }
 
-    virtual size_t output(char *buffer, size_t _size, size_t offset) const;
+    virtual size_t output(char* buffer, size_t _size, size_t offset) const override;
 
-    virtual node* addChild(node_ptr child);
-    virtual void report(size_t offset, uint8_t indent) const;
+    virtual node* addChild(const node_ptr& child) override;
+    virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
     union {

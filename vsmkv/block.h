@@ -45,8 +45,8 @@ public:
     size_t getSize() const override;
     size_t output(char *buffer, size_t _size, size_t offset) const override;
 
-    virtual node* addChild(node_ptr child);
-    virtual void report(size_t offset, uint8_t indent) const;
+    virtual node* addChild(const node_ptr& child) override;
+    virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
     const VSFrameRef* frame;

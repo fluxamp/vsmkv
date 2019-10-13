@@ -40,10 +40,10 @@ public:
     integer(const std::string name, const vint &id, const uint64_t v, const size_t s) :
             element(name, id), value(v), size(MIN(s, 8)) { updateLength(MIN(s, 8)); }
 
-    virtual size_t output(char *buffer, size_t _size, size_t offset) const;
+    virtual size_t output(char* buffer, size_t _size, size_t offset) const override;
 
-    virtual node* addChild(node_ptr child);
-    virtual void report(size_t offset, uint8_t indent) const;
+    virtual node* addChild(const node_ptr& child) override;
+    virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
     void updateSize(void);

@@ -113,7 +113,7 @@ void vint::updateSize(bool forceUpdate) {
     }
 }
 
-node* vint::addChild(node_ptr child) {
+node* vint::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

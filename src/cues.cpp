@@ -34,7 +34,7 @@ cues::cues(const std::string name, const vint& id, const clusterlist_ptr list, c
     assert(list != NULL);
 }
 
-node* cues::addChild(node_ptr child) {
+node* cues::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

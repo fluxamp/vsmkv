@@ -102,7 +102,7 @@ size_t clusterlist::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node* clusterlist::addChild(node_ptr child) {
+node* clusterlist::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }
@@ -139,7 +139,7 @@ caching_cluster::caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_
 {
 }
 
-node* caching_cluster::addChild(node_ptr child) {
+node* caching_cluster::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

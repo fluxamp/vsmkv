@@ -49,7 +49,7 @@ size_t string::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node* string::addChild(node_ptr child) {
+node* string::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

@@ -65,7 +65,7 @@ size_t node::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node* node::addChild(node_ptr child) {
+node* node::addChild(const node_ptr& child) {
     children.push_back(child);
     child->setParent(this);
 

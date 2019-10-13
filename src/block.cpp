@@ -120,7 +120,7 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
     return written;
 }
 
-node* block::addChild(node_ptr child) {
+node* block::addChild(const node_ptr& child) {
     (void) child;
     return this;
 }

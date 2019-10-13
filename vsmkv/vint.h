@@ -57,11 +57,11 @@ public:
     const vint operator -=(const size_t& o) { value -= o; updateSize(true); return *this; }
     inline uint64_t getValue() const { return value; }
 
-    virtual size_t getSize() const;
-    virtual size_t output(char* buffer, size_t _size, size_t offset) const;
+    virtual size_t getSize() const override;
+    virtual size_t output(char* buffer, size_t _size, size_t offset) const override;
 
-    virtual node* addChild(node_ptr child);
-    virtual void report(size_t offset, uint8_t indent) const;
+    virtual node* addChild(const node_ptr& child) override;
+    virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
     void updateSize(bool forceUpdate=false);

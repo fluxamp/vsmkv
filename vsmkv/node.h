@@ -44,7 +44,7 @@ public:
     virtual size_t getSize() const;
     virtual size_t output(char* buffer, size_t _size, size_t offset) const;
 
-    virtual node* addChild(node_ptr child);
+    virtual node* addChild(const node_ptr& child);
 
     virtual void setParent(node* p) { parent = p; }
 

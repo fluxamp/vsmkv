@@ -37,10 +37,10 @@ public:
     element(const std::string name, const vint& id) : name(name), ID(id) {}
     element(const std::string name, const vint& id, const size_t& minSize) : name(name), ID(id), length(0, minSize) {}
 
-    virtual size_t getSize() const;
-    virtual size_t output(char* buffer, size_t _size, size_t offset) const;
+    virtual size_t getSize() const override;
+    virtual size_t output(char* buffer, size_t _size, size_t offset) const override;
 
-    virtual node* addChild(node_ptr child);
+    virtual node* addChild(const node_ptr& child) override;
 
 protected:
     const vint ID;
@@ -51,7 +51,7 @@ protected:
     inline void updateLength(vint l) { length = l; }
     inline const vint& getLength(void) const { return length; }
 
-    virtual void report(size_t offset, uint8_t indent) const;
+    virtual void report(size_t offset, uint8_t indent) const override;
 
     size_t outputID(char** buffer, size_t& size, size_t& offset) const;
     size_t outputLength(char** buffer, size_t& size, size_t& offset) const;

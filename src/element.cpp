@@ -59,7 +59,7 @@ size_t element::output(char *buffer, size_t _size, size_t offset) const {
 
     return written;
 }
-node* element::addChild(node_ptr child) {
+node* element::addChild(const node_ptr& child) {
     node::addChild(child);
     length += child->getSize();
 
