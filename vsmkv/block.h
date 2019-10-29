@@ -28,13 +28,13 @@ SOFTWARE.
 #include <vapoursynth/VapourSynth.h>
 #include "element.h"
 
-typedef struct _header {
-    _header(uint8_t track, int16_t time, uint8_t f) : track_number((uint8_t)0x80|track), timecode(time), flags(f) {};
+struct block_header {
+    block_header(uint8_t track, int16_t time, uint8_t f) : track_number((uint8_t)0x80|track), timecode(time), flags(f) {};
 
     uint8_t track_number = 0x81;
     int16_t timecode;
     uint8_t flags;
-} block_header;
+};
 
 class block : public element{
 public:

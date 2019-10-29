@@ -55,7 +55,7 @@ private:
     const VSAPI* vsapi;
 };
 
-typedef std::shared_ptr<caching_cluster> caching_cluster_ptr;
+using caching_cluster_ptr = std::shared_ptr<caching_cluster>;
 
 class clusterlist : public node {
 public:
@@ -90,7 +90,7 @@ private:
     caching_cluster_ptr cached_cluster;
 };
 
-typedef std::shared_ptr<clusterlist> clusterlist_ptr;
+using clusterlist_ptr = std::shared_ptr<clusterlist>;
 
 inline clusterlist_ptr ClusterList(const VSAPI* api, VSNodeRef* node) { return std::make_shared<clusterlist>(api, node); }
 

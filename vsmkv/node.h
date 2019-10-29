@@ -31,7 +31,7 @@ SOFTWARE.
 
 class node;
 
-typedef std::shared_ptr<node> node_ptr;
+using node_ptr = std::shared_ptr<node>;
 
 /*
  * master class from which most others are derived from
