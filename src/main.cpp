@@ -52,7 +52,7 @@ static int readdir(const char* path, void* buf, fuse_fill_dir_t filler, off_t of
     filler(buf, ".", NULL, 0);
     filler(buf, "..", NULL, 0);
 
-    for(int i=0; i<options.streams.size(); i++) {
+    for(size_t i=0; i<options.streams.size(); i++) {
         std::stringstream fmt;
         fmt << "node_" << i;
         filler(buf, fmt.str().c_str(), NULL, 0);
@@ -73,7 +73,7 @@ static int getattr(const char* path, struct stat* stbuf)
     try {
         if(strcmp(path, "/") == 0) {
             stbuf->st_mode = S_IFDIR | 0755;
-        } else if(p.compare(0, 6, std::string("/node_")) == 0 && (node_number = std::stoi(p.substr(6))) < options.streams.size() && node_number >= 0) {
+        } else if(p.compare(0, 6, std::string("/node_")) == 0 && (node_number = std::stoi(p.substr(6))) < static_cast<int>(options.streams.size()) && node_number >= 0) {
             stbuf->st_mode = S_IFREG | 0444;
             stbuf->st_nlink = 1;
             stbuf->st_size = options.streams[node_number]->getSize();
@@ -93,7 +93,7 @@ static int read(const char *path, char *buf, size_t size, off_t offset, struct f
     std::string p = std::string(path);
     int node_number = -1;
 
-    if(p.compare(0, 6, std::string("/node_")) != 0 || (node_number = std::stoi(p.substr(6))) >= options.streams.size() || node_number < 0) {
+    if(p.compare(0, 6, std::string("/node_")) != 0 || (node_number = std::stoi(p.substr(6))) >= static_cast<int>(options.streams.size()) || node_number < 0) {
         return -ENOENT;
     }
 

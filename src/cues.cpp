@@ -49,9 +49,9 @@ void cues::setParent(const node* parent) {
 
     const uint64_t cluster_size = list->getClustersize();
     const uint64_t cluster_duration = list->getClusterduration();
-    const int num_clusters = list->getNumClusters();
+    const auto num_clusters = list->getNumClusters();
 
-    const int num_cues = (num_clusters - (num_clusters % cue_every_nth_cluster)) / cue_every_nth_cluster;
+    const uint64_t num_cues = (num_clusters - (num_clusters % cue_every_nth_cluster)) / cue_every_nth_cluster;
 
     // calculate size of cues from dummy cue
     auto track_positions = CueTrackPositions();
@@ -76,7 +76,7 @@ void cues::setParent(const node* parent) {
         children.clear();
     }
 
-    for(int i=0; i<num_cues; i++) {
+    for(uint64_t i=0; i<num_cues; i++) {
         auto track_positions = CueTrackPositions();
         track_positions->addChild(CueTrack())
                         ->addChild(CueClusterPosition(cluster_offset + i * cluster_size * cue_every_nth_cluster, 8))
