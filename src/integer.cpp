@@ -83,21 +83,21 @@ void integer::report(size_t offset, uint8_t indent) const {
     }
 
     printIndent(indent);
-    std::cout << name << std::endl;
+    std::cout << name << "\n";
 
     if(offset < ID.getSize()) {
         ID.report(offset, indent + 1);
-        std::cout << " (EBML ID)" << std::endl;
+        std::cout << " (EBML ID)" << "\n";
         return;
     }
     offset -= ID.getSize();
 
     if(offset < length.getSize()) {
         length.report(offset, indent + 1);
-        std::cout << " (EBML length)" << std::endl;
+        std::cout << " (EBML length)" << "\n";
         return;
     }
 
     printIndent(indent + 1);
-    std::cout << "value " << value << std::endl;
+    std::cout << "value " << value << "\n";
 }

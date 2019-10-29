@@ -81,7 +81,7 @@ static int getattr(const char* path, struct stat* stbuf)
             ret = -ENOENT;
         }
     } catch (const std::invalid_argument& ia) {
-        std::cout << "received invalid argument while trying to parse \"" << path << "\"" << std::endl;
+        std::cout << "received invalid argument while trying to parse \"" << path << "\"" << "\n";
     }
 
     return ret;
@@ -165,7 +165,7 @@ int main(int argc, char **argv) {
 
     // init vapoursynth
     if (!vsscript_init()) {
-        std::cerr << "failed to init vapoursynth script" << std::endl;
+        std::cerr << "failed to init vapoursynth script" << "\n";
         return 1;
     }
 
@@ -173,7 +173,7 @@ int main(int argc, char **argv) {
     assert(vsapi);
 
     if (vsscript_evaluateFile(&se, argv[1], 0)) {
-        std::cerr << "failed to load vapoursynth script file \"" << argv[1] << "\": " << vsscript_getError(se) << std::endl;
+        std::cerr << "failed to load vapoursynth script file \"" << argv[1] << "\": " << vsscript_getError(se) << "\n";
 
         vsscript_freeScript(se);
         vsscript_finalize();
@@ -189,14 +189,14 @@ int main(int argc, char **argv) {
         try {
             options.streams.push_back(std::make_unique<stream>(vsapi, node, index-1));
         } catch(std::string error) {
-            std::cerr << error << std::endl;
+            std::cerr << error << "\n";
             return 1;
         }
     }
 
     // mount filesystem and deal with the weird old FUSE API
     if(fuse_opt_parse(&f_args, &options, NULL, &opt_proc ) == -1) {
-        std::cerr << "failed to parse options" << std::endl;
+        std::cerr << "failed to parse options" << "\n";
 #ifdef fuse_cmdline_opts
         fuse_cmdline_help();
 #endif
@@ -204,7 +204,7 @@ int main(int argc, char **argv) {
     }
 
     if(fuse_parse_cmdline(&f_args, &f_opts) == -1) {
-        std::cerr << "failed to parse commandline arguments" << std::endl;
+        std::cerr << "failed to parse commandline arguments" << "\n";
 #ifdef fuse_cmdline_opts
         fuse_cmdline_help();
 #endif
@@ -214,14 +214,14 @@ int main(int argc, char **argv) {
 #ifndef fuse_cmdline_opts
     struct fuse_chan* ch = fuse_mount(f_opts.mountpoint, &f_args);
     if(!ch) {
-        std::cerr << "failed to mount filesystem" << std::endl;
+        std::cerr << "failed to mount filesystem" << "\n";
         return 1;
     }
 
     fuse = fuse_new(ch, &f_args, &oper, sizeof(struct fuse_operations), NULL);
 
     if(fuse == NULL) {
-        std::cerr << "failed to create fuse_struct" << std::endl;
+        std::cerr << "failed to create fuse_struct" << "\n";
         fuse_unmount(f_opts.mountpoint, ch);
         return 1;
     }
@@ -235,14 +235,14 @@ int main(int argc, char **argv) {
     }
 
     if(fuse_mount (fuse, f_opts.mountpoint) == -1) {
-        std::cerr << "failed to mount filesystem" << std::endl;
+        std::cerr << "failed to mount filesystem" << "\n";
         return 1;
     }
 
 #endif
 
     if(fuse_daemonize(f_opts.foreground) == -1) {
-        std::cerr << "failed to daemonize" << std::endl;
+        std::cerr << "failed to daemonize" << "\n";
 #ifndef fuse_cmdline_opts
         fuse_unmount(f_opts.mountpoint, ch);
 #else

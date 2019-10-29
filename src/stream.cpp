@@ -48,8 +48,8 @@ stream::stream(const VSAPI* api, VSNodeRef *_node, const int index) : api(api), 
     }
 
     // TODO: proper logging
-//    std::cout << "double fps: " << _f << " from " << vi->fpsNum << "/" << vi->fpsDen << " resulting in " << fps << " as float." << std::endl;
-//    std::cout << "frame format: " << vi->format->name << " with " << vi->format->bitsPerSample << " bits/sample and " << vi->format->numPlanes << " planes" << std::endl;
+//    std::cout << "double fps: " << _f << " from " << vi->fpsNum << "/" << vi->fpsDen << " resulting in " << fps << " as float." << "\n";
+//    std::cout << "frame format: " << vi->format->name << " with " << vi->format->bitsPerSample << " bits/sample and " << vi->format->numPlanes << " planes" << "\n";
 
     auto cl = ClusterList(api, _node);
     auto cues = Cues(cl);

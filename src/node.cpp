@@ -87,7 +87,7 @@ void node::report(size_t offset, uint8_t indent) const {
             }
         }
     } else {
-        std::cerr << "offset " << offset << " not found!" << std::endl;
+        std::cerr << "offset " << offset << " not found!" << "\n";
     }
 }
 
