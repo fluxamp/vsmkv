@@ -30,8 +30,9 @@ SOFTWARE.
 
 block::block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
              const uint64_t frame_size, const int16_t timecode) :
-        element(name, id), frame(frame), node(node), vsapi(api), head(1, timecode, 0x80),
-        frame_size(frame_size), total_size(1 + vint(4 + frame_size).getSize() + (4 + frame_size))
+        element(name, id), frame(frame), head(1, timecode, 0x80),
+        total_size(1 + vint(4 + frame_size).getSize() + (4 + frame_size)), frame_size(frame_size),
+        vsapi(api), node(node)
 {
     vi = vsapi->getVideoInfo(node);
 

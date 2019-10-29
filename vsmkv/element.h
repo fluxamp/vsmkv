@@ -34,8 +34,8 @@ SOFTWARE.
 class element : public node {
 public:
     virtual ~element()=default;
-    element(const std::string name, const vint& id) : name(name), ID(id) {}
-    element(const std::string name, const vint& id, const size_t& minSize) : name(name), ID(id), length(0, minSize) {}
+    element(const std::string name, const vint& id) : ID(id), name(name) {}
+    element(const std::string name, const vint& id, const size_t& minSize) : ID(id), length(0, minSize), name(name) {}
 
     virtual size_t getSize() const override;
     virtual size_t output(char* buffer, size_t _size, size_t offset) const override;

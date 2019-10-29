@@ -41,8 +41,8 @@ public:
     size_t getSize(void);
 
 private:
-    VSNodeRef* node;
     const VSAPI* api;
+    VSNodeRef* node;
 
     node_ptr master;
 };

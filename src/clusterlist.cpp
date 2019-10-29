@@ -37,7 +37,7 @@ std::shared_timed_mutex cluster_lock;
 clusterlist::clusterlist(const VSAPI* api, VSNodeRef* node) : clusterlist(api, node, 10) {}
 
 clusterlist::clusterlist(const VSAPI* api, VSNodeRef *node, int blocks_per_cluster) :
-    node(node), blocks_per_cluster(blocks_per_cluster), vsapi(api)
+    blocks_per_cluster(blocks_per_cluster), node(node), vsapi(api)
 {
     char error_message[1024];
 

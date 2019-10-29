@@ -45,14 +45,14 @@ private:
     int cached_cluster_number = -1;
     node_ptr cached_cluster;
 
-    const VSAPI* vsapi;
-    VSNodeRef* node;
-
     const int16_t frame_duration;
     const uint64_t frame_size;
     const int blocks_per_cluster;
     const int num_clusters;
     const int tail_blocks;
+
+    VSNodeRef* node;
+    const VSAPI* vsapi;
 };
 
 typedef std::shared_ptr<caching_cluster> caching_cluster_ptr;
