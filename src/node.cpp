@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include <iostream>
 #include "../vsmkv/node.h"
-#include "../vsmkv/utils.h"
 
 size_t node::getSize() const {
     size_t ret = 0;
@@ -51,7 +50,7 @@ size_t node::output(char *buffer, size_t _size, size_t offset) const {
             size_t child_size = child->getSize();
 
             if (offset < child_size && _size > 0) {
-                size_t child_written = child->output(buffer, MIN(_size, child_size - offset), offset);
+                size_t child_written = child->output(buffer, std::min(_size, child_size - offset), offset);
                 written += child_written;
                 _size -= child_written;
                 offset = 0;

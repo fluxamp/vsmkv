@@ -25,7 +25,6 @@ SOFTWARE.
 #include <iostream>
 #include <cstring>
 #include "vsmkv/floating.h"
-#include "vsmkv/utils.h"
 
 size_t floating::output(char *buffer, size_t _size, size_t offset) const {
     size_t written = 0;
@@ -38,7 +37,7 @@ size_t floating::output(char *buffer, size_t _size, size_t offset) const {
     written += outputLength(&buffer, _size, offset);
 
     if(offset < 4 && _size > 0) {
-        size_t l = MIN(_size, 4);
+        size_t l = std::min(_size, 4UL);
 
         for(int i=0; i<l; i++) {
             buffer[i] = cvalue[3-i];

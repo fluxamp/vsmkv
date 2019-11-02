@@ -26,7 +26,6 @@ SOFTWARE.
 #include <cstring>
 #include <iostream>
 #include "../vsmkv/block.h"
-#include "../vsmkv/utils.h"
 
 block::block(const std::string name, const vint id, const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame,
              const uint64_t frame_size, const int16_t timecode) :
@@ -58,7 +57,7 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
     written += outputLength(&buffer, _size, offset);
 
     if(offset < 4) {
-        size_t m = MIN(4-offset, _size);
+        size_t m = std::min(4-offset, _size);
         for(size_t i=0; i < m; i++) {
             if(i==0) {
                 buffer[i] = head.track_number;
@@ -99,7 +98,7 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
                 }
 
                 for (uint64_t y = start_row; y < height && _size > 0; y++) {
-                    size_t to_copy = MIN((size_t)(rowSize-row_offset), _size);
+                    size_t to_copy = std::min((size_t)(rowSize-row_offset), _size);
 
                     memcpy(buffer, readPtr, to_copy);
 
@@ -110,7 +109,7 @@ size_t block::output(char *buffer, size_t _size, size_t offset) const {
                     row_offset = 0;
                     offset = 0;
 
-                    readPtr += MIN(stride, to_copy);
+                    readPtr += std::min(stride, to_copy);
                 }
             } else {
                 offset -= rowSize * height;

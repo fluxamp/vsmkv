@@ -25,11 +25,10 @@ SOFTWARE.
 #include <string>
 #include <iostream>
 #include "vsmkv/vint.h"
-#include "vsmkv/utils.h"
 
 size_t vint::output(char* buffer, size_t _size, size_t offset) const
 {
-    size_t ret = MIN(size, 8);
+    size_t ret = std::min(size, 8UL);
     size_t written = 0;
     char left_mask = (char)(0x7F >> (ret-1));
 
@@ -62,7 +61,7 @@ size_t vint::output(char* buffer, size_t _size, size_t offset) const
         return 0;
     }
 
-    size_t start = MIN(ret, _size+offset);
+    size_t start = std::min(ret, _size+offset);
     uint64_t temp_value = value >> 8*(ret-start);
 
     for(size_t i=start; i > offset + 1; i--, written++) {

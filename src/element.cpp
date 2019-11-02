@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include <iostream>
 #include "../vsmkv/element.h"
-#include "../vsmkv/utils.h"
 
 size_t element::getSize() const {
     return ID.getSize() + length.getSize() + length.getValue();
@@ -46,7 +45,7 @@ size_t element::output(char *buffer, size_t _size, size_t offset) const {
             size_t child_size = child->getSize();
 
             if (offset < child_size && _size > 0) {
-                size_t child_written = child->output(buffer, MIN(_size, child_size - offset), offset);
+                size_t child_written = child->output(buffer, std::min(_size, child_size - offset), offset);
                 written += child_written;
                 _size -= child_written;
                 offset = 0;
@@ -95,7 +94,7 @@ size_t element::outputID(char **buffer, size_t &_size, size_t &offset) const {
     size_t written = 0;
 
     if(offset < ID.getSize()) {
-        size_t id_written = ID.output(*buffer, MIN(ID.getSize(), _size - offset), offset);
+        size_t id_written = ID.output(*buffer, std::min(ID.getSize(), _size - offset), offset);
         written += id_written;
         _size -= id_written;
         offset = 0;
@@ -111,7 +110,7 @@ size_t element::outputLength(char **buffer, size_t &_size, size_t &offset) const
     size_t written = 0;
 
     if(offset < length.getSize() && _size > 0) {
-        size_t length_written = length.output(*buffer, MIN(length.getSize(), _size - offset), offset);
+        size_t length_written = length.output(*buffer, std::min(length.getSize(), _size - offset), offset);
         written += length_written;
         _size -= length_written;
         offset = 0;

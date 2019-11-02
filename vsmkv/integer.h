@@ -26,7 +26,6 @@ SOFTWARE.
 #define VSMKV_INTEGER_H
 
 #include "element.h"
-#include "utils.h"
 
 /*
  * EBML unsigned integer
@@ -38,7 +37,7 @@ public:
     integer(const std::string name, const vint &id, const uint64_t v) :
             element(name, id), value(v), size(0) { updateSize(); updateLength(size); }
     integer(const std::string name, const vint &id, const uint64_t v, const size_t s) :
-            element(name, id), value(v), size(MIN(s, 8)) { updateLength(MIN(s, 8)); }
+            element(name, id), value(v), size(std::min(s, 8UL)) { updateLength(std::min(s, 8UL)); }
 
     virtual size_t output(char* buffer, size_t _size, size_t offset) const override;
 

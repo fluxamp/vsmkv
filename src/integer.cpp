@@ -37,7 +37,7 @@ size_t integer::output(char *buffer, size_t _size, size_t offset) const {
 
     if(offset < size && _size > 0) {
         uint64_t temp_value = value;
-        size_t l = MIN(_size, size);
+        size_t l = std::min(_size, size);
 
         for(size_t i=l; i > 0; i--) {
             buffer[i-1] = (char)(temp_value & 0xFF);

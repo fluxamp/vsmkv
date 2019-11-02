@@ -24,7 +24,6 @@ SOFTWARE.
 
 #include <iostream>
 #include "vsmkv/string.h"
-#include "vsmkv/utils.h"
 
 size_t string::output(char *buffer, size_t _size, size_t offset) const {
     size_t written = 0;
@@ -38,7 +37,7 @@ size_t string::output(char *buffer, size_t _size, size_t offset) const {
 
     const char* c_str = _s.c_str();
     if(offset < getLength().getValue() && _size > 0) {
-        size_t m = MIN(offset+_size, _s.length());
+        size_t m = std::min(offset+_size, _s.length());
         for(size_t i=offset; i<m; i++) {
             buffer[i] = c_str[i];
         }
