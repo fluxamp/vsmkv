@@ -18,25 +18,33 @@ set(SOURCE_FILES
         src/fourcc.cpp
         src/cues.cpp
         )
-add_executable(vsmkv ${SOURCE_FILES} src/main.cpp)
-target_include_directories(vsmkv PRIVATE ./)
 
+add_library(vsmkv_lib STATIC ${SOURCE_FILES})
+target_include_directories(vsmkv_lib PUBLIC ./)
+target_link_libraries(vsmkv_lib vapoursynth)
+target_link_libraries(vsmkv_lib vapoursynth-script)
+target_link_libraries(vsmkv_lib pthread)
+
+if(NOT test)
+    add_definitions(-O2)
+else()
+    add_definitions(-g -Og)
+endif()
+
+add_executable(vsmkv src/main.cpp)
+
+target_link_libraries(vsmkv vsmkv_lib)
 target_link_libraries(vsmkv fuse)
-target_link_libraries(vsmkv vapoursynth)
-target_link_libraries(vsmkv vapoursynth-script)
-target_link_libraries(vsmkv pthread)
 add_definitions(-D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26)
 
-#if(test)
+if(test)
     enable_testing()
 
     file(GLOB TEST_SRC_FILES tests/*.cpp)
+    add_executable(vsmkv_test ${TEST_SRC_FILES})
 
-    add_executable(vsmkv_test ${TEST_SRC_FILES} ${SOURCE_FILES})
-    target_include_directories(vsmkv_test PRIVATE ./)
-
+    target_link_libraries(vsmkv_test vsmkv_lib)
     target_link_libraries(vsmkv_test criterion)
-    target_link_libraries(vsmkv_test pthread)
 
     add_test(runtest vsmkv_test)
-#endif()
+endif()
