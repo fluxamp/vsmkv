@@ -26,13 +26,15 @@ SOFTWARE.
 #include "../vsmkv/node.h"
 
 size_t node::getSize() const {
-    size_t ret = 0;
-
-    for(auto child : children) {
-        ret += child->getSize();
+    if(_size > 0) {
+        return _size;
     }
 
-    return ret;
+    for(auto child : children) {
+        _size += child->getSize();
+    }
+
+    return _size;
 }
 
 size_t node::output(char *buffer, size_t _size, size_t offset) const {
@@ -65,6 +67,8 @@ size_t node::output(char *buffer, size_t _size, size_t offset) const {
 }
 
 node* node::addChild(const node_ptr& child) {
+    _size = 0; // force recalculation of size
+
     children.push_back(child);
     child->setParent(this);
 

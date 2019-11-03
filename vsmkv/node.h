@@ -60,6 +60,9 @@ protected:
 
     std::vector<node_ptr> children;
     const node* parent;
+
+private:
+    mutable size_t _size = 0; // cached result of getSize()
 };
 
 
