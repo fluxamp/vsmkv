@@ -40,7 +40,11 @@ add_definitions(-D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26)
 if(test)
     enable_testing()
 
-    file(GLOB TEST_SRC_FILES tests/*.cpp)
+    set(TEST_SRC_FILES
+        tests/element_test.cpp
+        tests/node_test.cpp
+        tests/vint_test.cpp
+    )
     add_executable(vsmkv_test ${TEST_SRC_FILES})
 
     target_link_libraries(vsmkv_test vsmkv_lib)
