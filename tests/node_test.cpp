@@ -26,7 +26,7 @@ SOFTWARE.
 #include "vsmkv/node.h"
 #include "vsmkv/vint.h"
 
-node_ptr parent;
+node_ptr parent = nullptr;
 node_ptr child1 = std::make_shared<vint>(0x8F);  // size 2
 node_ptr child2 = std::make_shared<vint>(0x04);  // size 1
 node_ptr child3 = std::make_shared<vint>(0x15);  // size 1
@@ -40,7 +40,7 @@ void setup(void)
 
 void finish(void)
 {
-    parent = NULL;
+    parent.reset();
 }
 
 Test(node, getSize, .init=setup, .fini=finish)
