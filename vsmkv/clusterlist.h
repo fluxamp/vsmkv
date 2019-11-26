@@ -30,7 +30,7 @@ SOFTWARE.
 
 class caching_cluster : public node {
 public:
-    caching_cluster(const VSAPI* api, VSNodeRef* node, const int16_t frame_dur, const uint64_t frame_size,
+    caching_cluster(const VSAPI* api, VSNodeRef* node, const double frame_dur, const uint64_t frame_size,
                     const int blocks_per_cluster, const int num_cluster, const int tail_blocks);
     ~caching_cluster() = default;
 
@@ -42,8 +42,8 @@ public:
     virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
-    int cached_cluster_number = -1;
-    node_ptr cached_cluster;
+    uint64_t cached_cluster_number = -1;
+    node_ptr cached_cluster = nullptr;
 
     const int16_t frame_duration;
     const uint64_t frame_size;
@@ -51,8 +51,8 @@ private:
     const int num_clusters;
     const int tail_blocks;
 
-    VSNodeRef* node;
-    const VSAPI* vsapi;
+    VSNodeRef* node = nullptr;
+    const VSAPI* vsapi = nullptr;
 };
 
 using caching_cluster_ptr = std::shared_ptr<caching_cluster>;
