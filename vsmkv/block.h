@@ -32,8 +32,8 @@ struct block_header {
     block_header(uint8_t track, int16_t time, uint8_t f) : track_number((uint8_t)0x80|track), timecode(time), flags(f) {};
 
     uint8_t track_number = 0x81;
-    int16_t timecode;
-    uint8_t flags;
+    int16_t timecode = 0;
+    uint8_t flags = 0;
 };
 
 class block : public element{
@@ -49,15 +49,15 @@ public:
     virtual void report(size_t offset, uint8_t indent) const override;
 
 private:
-    const VSFrameRef* frame;
+    const VSFrameRef* frame = nullptr;
     const block_header head;
 
-    const uint64_t total_size;
-    const uint64_t frame_size;
+    const uint64_t total_size = 0;
+    const uint64_t frame_size = 0;
 
-    const VSAPI* vsapi;
-    const VSVideoInfo* vi;
-    VSNodeRef* node;
+    const VSAPI* vsapi = nullptr;
+    const VSVideoInfo* vi = nullptr;
+    VSNodeRef* node = nullptr;
 };
 
 inline node_ptr Block(const VSAPI* api, VSNodeRef* node, const VSFrameRef* frame, const uint64_t size, const int16_t timecode=0) {
