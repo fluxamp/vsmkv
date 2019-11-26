@@ -37,8 +37,8 @@ public:
 
     virtual ~stream();
 
-    size_t read(char* buf, size_t size, off_t offset);
-    size_t getSize(void);
+    size_t read(char* buf, size_t size, off_t offset) const;
+    size_t getSize(void) const;
 
 private:
     const VSAPI* api;

@@ -97,7 +97,7 @@ stream::stream(const VSAPI* api, VSNodeRef *_node, const int index) : api(api), 
                ->addChild(TrackDefaultDuration(duration))
                ->addChild(tv)
     ;
-    
+
     auto tracks = Tracks();
     tracks->addChild(track_entry);
 
@@ -121,11 +121,11 @@ stream::~stream() {
     api->freeNode(node);
 }
 
-size_t stream::getSize() {
+size_t stream::getSize() const {
     return master->getSize();
 }
 
-size_t stream::read(char *buf, size_t size, off_t offset) {
+size_t stream::read(char *buf, size_t size, off_t offset) const {
     return master->output(buf, size, (size_t)offset);
 }
 

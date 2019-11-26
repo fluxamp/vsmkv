@@ -53,7 +53,7 @@ public:
 
     /* used for debugging: prints the tree that leads to the specified offset */
     virtual void report(size_t offset, uint8_t indent) const;
-    inline void report(size_t offset) { return report(offset, 0); }
+    inline void report(size_t offset) const { return report(offset, 0); }
 
 protected:
     void printIndent(uint8_t indent) const;
