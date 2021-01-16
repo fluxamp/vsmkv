@@ -26,6 +26,7 @@ SOFTWARE.
 #define VSMKV_FOURCC_H
 
 #include <map>
+#include <stdint.h>
 
 #define FOURCC(a,b,c,d) (a<<24) | (b<<16) | (c<<8) | d
 
