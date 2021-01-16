@@ -25,6 +25,7 @@ SOFTWARE.
 #ifndef VSMKV_ELEMENT_H
 #define VSMKV_ELEMENT_H
 
+#include <string>
 #include "node.h"
 #include "vint.h"
 
