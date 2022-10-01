@@ -21,6 +21,8 @@ cmake ../
 make
 ```
 
+For building unit tests, run `cmake ../ -Dtest=ON` instead of the regular cmake command above. This will build the vsmkv_test binary. Note that the regular binary will be built with debug symbols if the test flag is specified.
+
 ## Running
 
 The command requires two arguments. First, the path to your VapourSynth script. Second, an empty directory for mounting the filesystem. Additionally, a number of parameters inherited from FUSE may be specified (e.g., `-s` for running in single threaded mode or `-f` for running in foreground mode instead of daemonizing):
