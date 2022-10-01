@@ -2,6 +2,8 @@
 
 vsmkv is a FUSE-based virtual filesystem for exporting VapourSynth scripts as uncompressed videos in the Matroska (MKV) file format.
 
+Note: this is a proof of concept and will likely not work properly (for example might mess up timing)
+
 ## Dependencies
 
 FUSE, CMake and a compiler supporting the C++14 shared mutex (e.g., GCC >= 5.2) are required.
@@ -39,7 +41,7 @@ mpv node_0
 ## Limitations
 
 - Currently, only planar YUV color spaces are supported.
-- Concurrent access to the same video from multiple programs results in constant allocation and de-allocation of frames with a huge performance penalty.
+- Concurrent access to the same video from multiple programs (or threads of the same program) results in constant allocation and de-allocation of frames with a huge performance penalty.
 - The software lacks proper logging and error handling for now - errors result in uncaught exceptions.
 - The filesystem needs to be remounted after changing the VapourSynth script file
 - No Windows support (yet) due to the missing native FUSE implementation. [Crossmeta FUSE](https://github.com/crossmeta/cxfuse) may possibly work.
