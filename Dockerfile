@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -8,22 +8,15 @@ RUN apt update && apt install -y \
 
 RUN pip3 install cython
 
-RUN cd /opt/ && git clone -b release-2.9.2 https://github.com/sekrit-twc/zimg && cd zimg && ./autogen.sh && ./configure && make -j4 && make install
-RUN cd /opt/ && git clone -b R47.2 https://github.com/vapoursynth/vapoursynth && cd vapoursynth && ./autogen.sh && ./configure && make -j4 && make install
+RUN cd /opt/ && git clone -b release-3.0.4 https://github.com/sekrit-twc/zimg && cd zimg && ./autogen.sh && ./configure && make -j4 && make install
+RUN cd /opt/ && git clone -b R60 https://github.com/vapoursynth/vapoursynth && cd vapoursynth && ./autogen.sh && ./configure && make -j4 && make install
 
 # dependencies for ffms2
 RUN apt install -y libswscale-dev
 RUN cd /opt/ && git clone --depth 1 https://github.com/FFMS/ffms2 && cd ffms2 && ./autogen.sh && ./configure && make -j4 && make install
-RUN cp /usr/local/lib/libffms2.* /usr/local/lib/vapoursynth/
 
-# testing framework
-RUN apt install -y software-properties-common
-RUN add-apt-repository ppa:snaipewastaken/ppa
-RUN apt update
-RUN apt install -y criterion-dev
-
-# tools for benchmarking and debugging
-RUN apt install -y ffmpeg x264 mkvtoolnix
+# tools for benchmarking, testing and debugging
+RUN apt install -y ffmpeg x264 mkvtoolnix libcriterion-dev
 
 # clean installation files
 RUN apt -y autoclean
@@ -35,4 +28,4 @@ VOLUME /workspace
 WORKDIR /workspace
 
 # run vsmkv as:
-# PYTHONPATH=/usr/local/lib/python3.6/site-packages build/vsmkv
+# PYTHONPATH=/usr/local/lib/python3.x/site-packages build/vsmkv
